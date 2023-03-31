@@ -30,8 +30,64 @@ body {
 		linear-gradient(180deg, var(--color-bg-0) 0%, var(--color-bg-1) 15%, var(--color-bg-2) 50%);
 }
 
+
 * {
-	font-family: var(--font-body);
+	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+}
+
+.content ul {
+	list-style: none;
+}
+.content ul li {
+	margin-top: 20px;
+}
+.teaser {
+	display: flex;
+	gap: 10px;
+	margin-top: 50px;
+}
+.teaser .textContent {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	width: 50%;
+}
+.teaser .textContent h4 {
+	font-size: 24px;
+	margin-top: 10px;
+	margin-bottom: 0;
+}
+.teaser .textContent p {
+	margin: 0;
+}
+.teaser .image {
+	width: 50%;
+	display: flex;
+	overflow: hidden;
+}
+.teaser .image img {
+	object-fit: cover;
+	min-width: 100%;
+	min-height: 100%;
+}
+.teaser .buttons {
+	margin-top: auto;
+	margin-bottom: 20px;
+}
+.teaser .buttons a {
+	color: white;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin-right: 20px;
+	padding: 5px 13px 7px 13px;
+	background-color: blue;
+	border-radius: 100px;
+	text-decoration: none;
 }
 
 

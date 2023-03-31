@@ -1,16 +1,20 @@
 <script>
-// @ts-nocheck
+	// @ts-nocheck
 
-	import './styles.css'
-	import { onMount, } from 'svelte';
+	import './styles.css';
+	import { onMount } from 'svelte';
+	import Teaser from '../components/Teaser.svelte';
 	let data = null;
+
 	const dataHandler = (event) => {
-		console.log('\x1b[31m ~ event:', event);
 		if (event.data.type !== 'setCfData') {
 			return;
 		}
+		console.log("\x1b[31m ~ data:", data)
 		data = event.data.payload.data;
+		console.log("\x1b[31m ~ data:", data)
 	};
+
 	onMount(async () => {
 		const response = await fetch(
 			'https://author-p54352-e854610.adobeaemcloud.com/graphql/execute.json/sample-list/Homepage',
@@ -40,11 +44,14 @@
 
 		<div class="content">
 			<ul>
-				{#each data.pageContent as item}
+				{#each data.listContent as item}
 					<li><p>{item.plaintext}</p></li>
 				{/each}
 			</ul>
 		</div>
+		{#if data.teaser}
+			<Teaser teaser={data.teaser} />
+		{/if}
 	</main>
 {:else}
 	<main>
@@ -58,20 +65,3 @@
 	</main>
 {/if}
 
-<style>
-	* {
-		font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-	}
-
-	main {
-		display: flex;
-		flex-direction: column;
-	}
-
-	.content ul {
-		list-style: none;
-	}
-	.content ul li {
-		margin-top: 20px;
-	}
-</style>
