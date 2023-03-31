@@ -10,9 +10,7 @@
 		if (event.data.type !== 'setCfData') {
 			return;
 		}
-		console.log("\x1b[31m ~ data:", data)
 		data = event.data.payload.data;
-		console.log("\x1b[31m ~ data:", data)
 	};
 
 	onMount(async () => {
