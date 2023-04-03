@@ -89,7 +89,7 @@
 		data = fetchData?.data?.pageByPath?.item;
 
 		searchParams = new URLSearchParams(window.location.search);
-		// if (searchParams.get('editMode') !== 'true') {return}
+		if (searchParams.get('editMode') !== 'false') {return}
 		window.addEventListener("message", dataHandler);
 		window.addEventListener("click", handleClick);
 		window.addEventListener("scroll", handleScroll);
