@@ -103,12 +103,12 @@
 			window.addEventListener("resize", handleResize);
 		}
 
-		// return () => {
-		// 	window.removeEventListener("message", dataHandler);
-		// 	window.removeEventListener("click", handleClick);
-		// 	window.removeEventListener("scroll", handleScroll);
-		// 	window.removeEventListener("resize", handleResize);
-		// };
+		return () => {
+			window.removeEventListener("message", dataHandler);
+			window.removeEventListener("click", handleClick);
+			window.removeEventListener("scroll", handleScroll);
+			window.removeEventListener("resize", handleResize);
+		};
 	});
 
 </script>
