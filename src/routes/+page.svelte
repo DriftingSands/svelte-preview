@@ -79,6 +79,10 @@
 		data = event.data.payload.data;
 	};
 
+	const editData = (newData) => {
+		data = newData
+	}
+
 	onMount(async () => {
 		const response = await fetch(
 			"https://author-p54352-e854610.adobeaemcloud.com/graphql/execute.json/sample-list/Homepage",
@@ -86,22 +90,27 @@
 		);
 		const fetchData = await response.json();
 
-		data = fetchData?.data?.pageByPath?.item;
+		// using the cfEditorListener, it requires that you set your own data change function specific to the framework you are using.
+		window.cfEditorDataFunction = editData
+
+		editData(fetchData?.data?.pageByPath?.item)
 
 		searchParams = new URLSearchParams(window.location.search);
-		if (searchParams.get('editMode') === 'false') {return}
-		window.addEventListener("message", dataHandler);
-		window.addEventListener("click", handleClick);
-		window.addEventListener("scroll", handleScroll);
-		window.addEventListener("resize", handleResize);
+		if (searchParams.get('editMode') === 'HOC') {
+			window.addEventListener("message", dataHandler);
+			window.addEventListener("click", handleClick);
+			window.addEventListener("scroll", handleScroll);
+			window.addEventListener("resize", handleResize);
+		}
 
-		return () => {
-			window.removeEventListener("message", dataHandler);
-			window.removeEventListener("click", handleClick);
-			window.removeEventListener("scroll", handleScroll);
-			window.removeEventListener("resize", handleResize);
-		};
+		// return () => {
+		// 	window.removeEventListener("message", dataHandler);
+		// 	window.removeEventListener("click", handleClick);
+		// 	window.removeEventListener("scroll", handleScroll);
+		// 	window.removeEventListener("resize", handleResize);
+		// };
 	});
+
 </script>
 
 {#if data}
