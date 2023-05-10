@@ -4,10 +4,13 @@
 	import "./styles.css";
 	import { onMount } from "svelte";
 	import Teaser from "../components/Teaser.svelte";
+	import Logo from "../components/Logo.svelte"
 	let data = null;
 
 	let searchParams;
 	let topMostEditableElement;
+	let fetchComplete = false
+	let onlyExternalData = false
 
 	const handleClick = (event) => {
 		const nodeList = document.elementsFromPoint(event.x, event.y);
@@ -84,18 +87,25 @@
 	}
 
 	onMount(async () => {
-		const response = await fetch(
-			"https://author-p54352-e854610.adobeaemcloud.com/graphql/execute.json/sample-list/Homepage",
-			{ credentials: "include" }
-		);
-		const fetchData = await response.json();
+		searchParams = new URLSearchParams(window.location.search);
 
 		// using the cfEditorListener, it requires that you set your own data change function specific to the framework you are using.
 		window.cfEditorDataFunction = editData
 
+		if (searchParams.get("onlyExternalData") === "true") {
+			onlyExternalData = true
+			return
+		}
+
+		const response = await fetch(
+			"https://author-p54352-e854610.adobeaemcloud.com/graphql/execute.json/sample-list/Homepage",
+			{ credentials: "include" }
+		);
+		fetchComplete = true
+		const fetchData = await response.json();
+
 		editData(fetchData?.data?.pageByPath?.item)
 
-		searchParams = new URLSearchParams(window.location.search);
 		if (searchParams.get('editMode') === 'HOC') {
 			window.addEventListener("message", dataHandler);
 			window.addEventListener("click", handleClick);
@@ -113,36 +123,50 @@
 
 </script>
 
-{#if data}
+
+{#if data?.header || data?.listContent?.length || data?.teaser}
 	<main>
 		<h1>
-			<img
-				src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Svelte_Logo.svg/1200px-Svelte_Logo.svg.png"
-				alt="svelte icon"
-				height="24"
-			/>
+			<Logo/>
 			{data.header.toUpperCase()}
 		</h1>
 
 		<div class="content">
 			<ul>
+				{#if data?.listContent?.length}
 				{#each data.listContent as item}
-					<li><p>{item.plaintext}</p></li>
+					<li><p>{item?.plaintext || ""}</p></li>
 				{/each}
+				{/if}
 			</ul>
 		</div>
 		{#if data.teaser}
 			<Teaser teaser={data.teaser} />
 		{/if}
 	</main>
-{:else}
+{:else if onlyExternalData}
 	<main>
 		<h2>
+			<Logo/>
+			Waiting for data...
+		</h2>
+	</main>
+{:else if fetchComplete}
+	<main>
+		<h2>
+			<Logo/>
 			AEM Fetch failed, log into <a
 				target="_blank"
 				href="https://author-p54352-e854610.adobeaemcloud.com"
 				>https://author-p54352-e854610.adobeaemcloud.com</a
 			>
+		</h2>
+	</main>
+{:else}
+	<main>
+		<h2>
+			<Logo/>
+			Fetching data...
 		</h2>
 	</main>
 {/if}

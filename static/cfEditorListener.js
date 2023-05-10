@@ -66,7 +66,10 @@ const handleScroll = () => {
 };
 
 const dataHandler = (event) => {
-  window.cfEditorDataFunction(event.data.payload.data)
+  try {
+    window.cfEditorDataFunction(event.data.payload.data)
+  } catch (error) {
+  }
 };
 
 const scrollMessageHandler = (event) => {
