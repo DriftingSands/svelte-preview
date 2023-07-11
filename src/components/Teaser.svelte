@@ -14,12 +14,14 @@
 			<img
 				src={"https://publish-p54352-e854610.adobeaemcloud.com" + teaser?.image?._path}
 				alt={teaser?.imageAltText?.plaintext}
+				data-editable-path={teaser?._path}
+				data-inner-cf-path={".image._path"}
 			/>
 			{/if}
 		</div>
 		<div class="textContent">
-			<h4>{teaser?.title || ""}</h4>
-			<p>{teaser?.description?.plaintext || ""}</p>
+			<h4 data-editable-path={teaser?._path} data-inner-cf-path={".title"}>{teaser?.title || ""}</h4>
+			<p data-editable-path={teaser?._path} data-inner-cf-path={".description.plaintext"}>{teaser?.description?.plaintext || ""}</p>
 			<div class="buttons">
 				{#if teaser?.readMoreLink}
 					<a href={teaser?.readMoreLink} target="_blank">Read More</a>

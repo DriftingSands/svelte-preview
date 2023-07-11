@@ -96,7 +96,7 @@
 		searchParams = new URLSearchParams(window.location.search);
 
 		// using the cfEditorListener, it requires that you set your own data change function specific to the framework you are using.
-		window.cfEditorDataFunction = editData;
+		window.cfEditorDataFunction = (event) => editData(event.data.payload.data);
 
 		if (searchParams.get("onlyExternalData") === "true") {
 			onlyExternalData = true;
@@ -132,7 +132,7 @@
 
 {#if data?.header || data?.listContent?.length || data?.teaser}
 	<main>
-		<h1>
+		<h1 data-editable-path={data._path} data-inner-cf-path={".header"}>
 			<Logo />
 			{data.header.toUpperCase()}
 		</h1>
@@ -140,8 +140,8 @@
 		<div class="content">
 			<ul>
 				{#if data?.listContent?.length}
-					{#each data.listContent as item}
-						<li><p>{item?.plaintext || ""}</p></li>
+					{#each data.listContent as item, index}
+						<li data-editable-path={data._path} data-inner-cf-path={`.listContent.${index}.plaintext`} data-cf-add-new={true}><p>{item?.plaintext || ""}</p></li>
 					{/each}
 				{/if}
 			</ul>
